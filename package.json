@@ -1,0 +1,28 @@
+{
+  "name": "proton-native-reload",
+  "version": "1.0.0",
+  "description": "Simple monitor script for use during development of a proton-native app.",
+  "main": "./index.js",
+  "keywords": [
+    "proton-native-reload",
+    "proton-native-app",
+    "proton-native-helper",
+    "proton-native-dev",
+    "proton-native"
+  ],
+  "bin": {
+    "proton-native-reload": "./index.js"
+  },
+  "author": {
+    "name": "Ivan Ino Bagaric",
+    "url": "http://github.com/Ino-Bagaric"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ino-Bagaric/proton-native-reload.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "terminate": "^2.1.0"
+  }
+}
