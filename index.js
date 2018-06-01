@@ -11,9 +11,9 @@ const cwd       = require('./lib/cwd');
 
 let app = startApp();
 
-fs.watch('.', function (event, filename) {
+fs.watch('.', {recursive: true}, (event, filename) => {
     if (event === 'change' && filename) {
-        terminate(app.pid, function (err) {
+        terminate(app.pid, (err) => {
             if (!err) {
                 console.log(`\n\x1b[32m[proton-native-reload] File \x1b[0m${filename} \x1b[32mhas been changed\x1b[0m\n`);
                 app = startApp();
