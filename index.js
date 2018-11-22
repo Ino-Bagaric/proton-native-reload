@@ -9,9 +9,33 @@ const terminate = require('terminate');
 const pkg       = require('./lib/pkg');
 const cwd       = require('./lib/cwd');
 
-let app = startApp();
+let __mainFile  = 'index.js';
+let __mainPath  = '.';
 
-fs.watch('.', {recursive: true}, (event, filename) => {
+if (process.argv.length) {
+    const argvOffset = 2;
+
+    for (let i in process.argv) {
+        i = i + argvOffset;
+        const arg = process.argv[i];
+
+        if (arg) {
+            const argClean = arg.replace(/--main-file=|--watch-path=/ig, '');
+
+            if ((arg.indexOf('--main-file=') > -1 && fs.lstatSync(argClean).isFile()) || fs.lstatSync(argClean).isFile()) {
+                __mainFile = argClean;
+            }
+
+            if ((arg.indexOf('--watch-path=') > -1 && fs.lstatSync(argClean).isDirectory())  || fs.lstatSync(argClean).isDirectory()) {
+                __mainPath = argClean;
+            }
+        }
+    }
+}
+
+let app = startApp(__mainFile, __mainPath);
+
+fs.watch(__mainPath, {recursive: true}, (event, filename) => {
     if (event === 'change' && filename) {
         terminate(app.pid, (err) => {
             if (!err) {
@@ -22,7 +46,7 @@ fs.watch('.', {recursive: true}, (event, filename) => {
     }
 });
 
-function startApp() {
+function startApp(mainFile, mainPath) {
     if (!cwd()) {
         console.log('\n\x1b[31m[proton-native-reload] proton-native app not found!\x1b[0m');
         console.log('\x1b[31m[proton-native-reload] Please execute this command in \x1b[0mproton-native\x1b[31m project directory\x1b[0m\n');
@@ -35,16 +59,8 @@ function startApp() {
 
     console.log(`\n\x1b[33m[proton-native-reload] ${pkg.version}\x1b[0m`);
     console.log(`\x1b[33m[proton-native-reload] Starting\x1b[0m ${folder}`);
-
-    let mainFile = 'index.js';
-
-    if (process.argv.length) {
-        if (fs.lstatSync(process.argv[2]).isFile()) {
-            mainFile = process.argv[2];
-        }
-    }
-
-    console.log(`\x1b[33m[proton-native-reload] Reading:\x1b[0m ${mainFile}\n`);
+    console.log(`\x1b[33m[proton-native-reload] Reading:\x1b[0m ${mainFile}`);
+    console.log(`\x1b[33m[proton-native-reload] Watching:\x1b[0m ${mainPath}\n`);
 
     let app = spawn('node_modules/.bin/babel-node', [mainFile]);
 
