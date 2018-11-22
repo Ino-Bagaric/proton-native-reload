@@ -34,9 +34,19 @@ function startApp() {
     folder     = folder[folder.length - 1];
 
     console.log(`\n\x1b[33m[proton-native-reload] ${pkg.version}\x1b[0m`);
-    console.log(`\x1b[33m[proton-native-reload] Starting\x1b[0m ${folder}\n`);
+    console.log(`\x1b[33m[proton-native-reload] Starting\x1b[0m ${folder}`);
 
-    let app = spawn('node_modules/.bin/babel-node', ['index.js']);
+    let mainFile = 'index.js';
+
+    if (process.argv.length) {
+        if (fs.lstatSync(process.argv[2]).isFile()) {
+            mainFile = process.argv[2];
+        }
+    }
+
+    console.log(`\x1b[33m[proton-native-reload] Reading:\x1b[0m ${mainFile}\n`);
+
+    let app = spawn('node_modules/.bin/babel-node', [mainFile]);
 
     app.stdout.on('data', (data) => {
         console.log('\n\x1b[32m-------------------------- \x1b[0m( Output! ) \x1b[32m--------------------------')
