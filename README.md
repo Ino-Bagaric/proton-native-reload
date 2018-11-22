@@ -25,3 +25,10 @@ Navigate to you proton-native application directory and simply run
 ```bash
 proton-native-reload
 ```
+By default the entry file is `/index.js`.
+
+You can define the entry file by passing a first argument.
+
+```bash
+proton-native-reload src/app/index.js
+```
