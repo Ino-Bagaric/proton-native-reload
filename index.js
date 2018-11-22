@@ -16,7 +16,7 @@ if (process.argv.length) {
     const argvOffset = 2;
 
     for (let i in process.argv) {
-        i = i + argvOffset;
+        i = Number(i) + argvOffset;
         const arg = process.argv[i];
 
         if (arg) {
