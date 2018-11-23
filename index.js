@@ -40,7 +40,7 @@ fs.watch(__mainPath, {recursive: true}, (event, filename) => {
         terminate(app.pid, (err) => {
             if (!err) {
                 console.log(`\n\x1b[32m[proton-native-reload] File \x1b[0m${filename} \x1b[32mhas been changed\x1b[0m\n`);
-                app = startApp();
+                app = startApp(__mainFile, __mainPath);
             }
         });
     }
