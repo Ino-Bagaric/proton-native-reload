@@ -1,6 +1,6 @@
 {
   "name": "proton-native-reload",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Simple monitor script for use during development of a proton-native app.",
   "main": "./index.js",
   "keywords": [
